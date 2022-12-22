@@ -87,7 +87,7 @@ namespace TCPServer
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Exception");
+                Console.WriteLine(ex.Message);
                 QueuePacketSend(XPacketConverter.Serialize(XPacketType.Exception, new XPacketWithoutInfo()).ToPacket());
             }
 
@@ -97,7 +97,7 @@ namespace TCPServer
         private void ProcessPause(XPacket packet)
         {
             _game.IsPause = !_game.IsPause;
-            foreach(var client in _server.client)
+            foreach(var client in _server.clients)
             {
                 client.QueuePacketSend(XPacketConverter.Serialize(XPacketType.Pause, new XPacketWithoutInfo()).ToPacket());
             }
@@ -146,7 +146,7 @@ namespace TCPServer
                 Console.WriteLine("give start packets to clients");
                 _game.IsPause = false;
 
-                foreach(var client in _server.client)
+                foreach(var client in _server.clients)
                 {
                     var startGamePacket = new XPacketWithoutInfo();
                     client.QueuePacketSend(XPacketConverter.Serialize(XPacketType.StartGame, startGamePacket).ToPacket());

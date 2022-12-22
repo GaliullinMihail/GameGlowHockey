@@ -13,6 +13,7 @@
         AddToGame, //player from server
         Handshake,
         StartGame,
+        GameInfo, //int firstPlayerX, int firstPlayerY, int secondPLayerX, int secondPlayerY, int puckX, int puckY 
         Unknown,
         Exception
     }

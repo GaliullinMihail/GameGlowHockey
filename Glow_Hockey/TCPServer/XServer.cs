@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using TCPServer.Hockey;
+using XProtocol;
+using XProtocol.Serializator;
 
 namespace TCPServer
 {
     public class XServer
     {
+        private Stopwatch watch = new Stopwatch();
         private readonly Socket _socket;
-        internal readonly List<ConnectedClient> client;
+        internal readonly List<ConnectedClient> clients;
         private Game _game;
 
         private bool _listening;
@@ -17,12 +21,11 @@ namespace TCPServer
 
         public XServer()
         {
-            var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            var ipAddress = ipHostInfo.AddressList[0];
+            watch.Start();
 
 
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            client = new List<ConnectedClient>();
+            clients = new List<ConnectedClient>();
             _game = new Game();
         }
 
@@ -37,6 +40,7 @@ namespace TCPServer
             _socket.Listen(10);
 
             _listening = true;
+            Task.Run((Action)SendGameInfo);
         }
 
         public void Stop()
@@ -49,6 +53,39 @@ namespace TCPServer
             _stopListening = true;
             _socket.Shutdown(SocketShutdown.Both);
             _listening = false;
+        }
+
+        private void SendGameInfo()
+        {
+            while(true)
+            {
+                if(_game.IsPause)
+                {
+                    Thread.Sleep(100);
+                    continue;
+                }
+
+                if(watch.ElapsedMilliseconds > 50)
+                {
+                    var firstPlayerPos = _game.GetPlayerPosition(0);
+                    var secondPlayerPos = _game.GetPlayerPosition(1);
+                    var puckPos = _game.PuckPosition;
+                    foreach (var client in clients)
+                    {
+
+                        client.QueuePacketSend(XPacketConverter.Serialize(XPacketType.GameInfo, new XPacketGameInfo
+                        {
+                            firstPlayerX = firstPlayerPos.X,
+                            firstPlayerY = firstPlayerPos.Y,
+                            secondPlayerX = secondPlayerPos.X,
+                            secondPlayerY = secondPlayerPos.Y,
+                            puckX = puckPos.X,
+                            puckY = puckPos.Y
+                        }).ToPacket());
+                    }
+                    watch.Restart();
+                }
+            }
         }
 
         public void AcceptClients()
@@ -71,7 +108,7 @@ namespace TCPServer
                 Console.WriteLine($"[!] Accepted client from {(IPEndPoint)client.RemoteEndPoint}");
 
                 var c = new ConnectedClient(client, _game, this);
-                this.client.Add(c);
+                this.clients.Add(c);
             }
         }
     }

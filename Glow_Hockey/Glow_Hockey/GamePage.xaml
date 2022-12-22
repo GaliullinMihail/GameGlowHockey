@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:drawable="clr-namespace:Glow_Hockey.Views"
              x:Class="Glow_Hockey.GamePage"
              Title="GamePage"
              >
+    <ContentPage.Resources>
+        <drawable:GraphicsDrawable x:Key="drawable" />
+    </ContentPage.Resources>
     <StackLayout>
 
         <Grid>
@@ -23,6 +27,10 @@
 
         <Image x:Name ="background" Source="background.png" WidthRequest="2000" HeightRequest="940" ScaleX="1.35">
         </Image>
+
+        <GraphicsView Drawable="{StaticResource drawable}"
+                      HeightRequest="300"
+                      WidthRequest="400" />
     </StackLayout>
 
 </ContentPage>

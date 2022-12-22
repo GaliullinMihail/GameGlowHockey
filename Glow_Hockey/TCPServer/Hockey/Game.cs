@@ -55,5 +55,9 @@ namespace TCPServer.Hockey
 
         public int PlayerCount => players.Count;
 
+        public Point GetPlayerPosition(int id) => players.Count < id + 1? throw new ArgumentOutOfRangeException(): players[id].Position;
+
+        public Point PuckPosition => puck.position;
+
     }
 }
