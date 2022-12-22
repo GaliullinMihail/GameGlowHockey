@@ -11,17 +11,19 @@ namespace TCPServer.Hockey
     {
         public static int radiusPlayer = 10;
         public static int radiusPuck = 5;
-        Point firstPlayerPosition = new Point(407, 441);                    //1828 x 882
-        Point secondPlayerPosition = new Point(1421, 441);                    //914 x 441
+        Point firstPlayerPosition = new Point(500, 592);                    
+        Point secondPlayerPosition = new Point(1415, 592);                  
         private List<Player> players;
         private GameScore Score;
-        private Puck puck;  
+        private Puck puck;
+        public bool IsPause;
 
         public Game()
         {
             players = new List<Player>();
             Score = new GameScore();
             puck = new Puck();
+            IsPause = true;
         }
         public void AddPlayer()
         {

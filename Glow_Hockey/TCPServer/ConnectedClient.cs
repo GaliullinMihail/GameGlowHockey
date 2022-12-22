@@ -65,15 +65,22 @@ namespace TCPServer
                     case XPacketType.Handshake:
                         ProcessHandshake(packet);
                         break;
+
                     case XPacketType.Register:
                         ProcessRegister(packet);
                         break;
+
                     case XPacketType.SendCursorPosition:
                         ProcessCursor(packet);
                         break;
-                    
+
+                    case XPacketType.Pause:
+                        ProcessPause(packet);
+                        break;
+
                     case XPacketType.Unknown:
                         break;
+                    
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -85,6 +92,15 @@ namespace TCPServer
             }
 
             
+        }
+
+        private void ProcessPause(XPacket packet)
+        {
+            _game.IsPause = !_game.IsPause;
+            foreach(var client in _server.client)
+            {
+                client.QueuePacketSend(XPacketConverter.Serialize(XPacketType.Pause, new XPacketWithoutInfo()).ToPacket());
+            }
         }
 
         private void ProcessCursor(XPacket packet)
@@ -128,8 +144,9 @@ namespace TCPServer
             if(_game.PlayerCount == 2)
             {
                 Console.WriteLine("give start packets to clients");
+                _game.IsPause = false;
 
-                foreach(var client in _server._clients)
+                foreach(var client in _server.client)
                 {
                     var startGamePacket = new XPacketWithoutInfo();
                     client.QueuePacketSend(XPacketConverter.Serialize(XPacketType.StartGame, startGamePacket).ToPacket());

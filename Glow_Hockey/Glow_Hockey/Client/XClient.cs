@@ -115,6 +115,9 @@ namespace Glow_Hockey.Client
                     break;
                 case XPacketType.Unknown:
                     break;
+                case XPacketType.Pause:
+                    GameIsPaused = !GameIsPaused;
+                    break;
                 case XPacketType.Exception:
                     throw new Exception();          //TODO Exception Problema(не останавливает приложение)
                 default:

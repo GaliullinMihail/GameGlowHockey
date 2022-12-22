@@ -9,7 +9,7 @@ namespace TCPServer
     public class XServer
     {
         private readonly Socket _socket;
-        internal readonly List<ConnectedClient> _clients;
+        internal readonly List<ConnectedClient> client;
         private Game _game;
 
         private bool _listening;
@@ -22,7 +22,7 @@ namespace TCPServer
 
 
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _clients = new List<ConnectedClient>();
+            client = new List<ConnectedClient>();
             _game = new Game();
         }
 
@@ -71,7 +71,7 @@ namespace TCPServer
                 Console.WriteLine($"[!] Accepted client from {(IPEndPoint)client.RemoteEndPoint}");
 
                 var c = new ConnectedClient(client, _game, this);
-                _clients.Add(c);
+                this.client.Add(c);
             }
         }
     }
