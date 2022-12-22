@@ -81,7 +81,7 @@ namespace TCPServer
             catch(Exception ex)
             {
                 Console.WriteLine("Exception");
-                QueuePacketSend(XPacketConverter.Serialize(XPacketType.Exception, new XPacketException()).ToPacket());
+                QueuePacketSend(XPacketConverter.Serialize(XPacketType.Exception, new XPacketWithoutInfo()).ToPacket());
             }
 
             
@@ -131,7 +131,7 @@ namespace TCPServer
 
                 foreach(var client in _server._clients)
                 {
-                    var startGamePacket = new XPacketStartGame();
+                    var startGamePacket = new XPacketWithoutInfo();
                     client.QueuePacketSend(XPacketConverter.Serialize(XPacketType.StartGame, startGamePacket).ToPacket());
                 }
                 Console.WriteLine("gave start packets to clients");

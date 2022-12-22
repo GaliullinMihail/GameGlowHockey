@@ -19,7 +19,7 @@ public partial class MainPage : ContentPage
             XClient.QueuePacketSend(
                     XPacketConverter.Serialize(
                         XPacketType.Register,
-                        new XPacketRegister
+                        new XPacketWithoutInfo
                         {
                         }).ToPacket());
         }

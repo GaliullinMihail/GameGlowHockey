@@ -10,9 +10,11 @@ namespace Glow_Hockey;
 
 public partial class GamePage : ContentPage
 {
+	private Stopwatch watch = new Stopwatch();
 	public GamePage()
 	{
-		InitializeComponent();
+        watch.Start();
+        InitializeComponent();
 		
 		Task.Run((Action)SendCursorPackets);
 	}
@@ -24,40 +26,29 @@ public partial class GamePage : ContentPage
 
 	private void SendCursorPackets()
 	{
-		var watch = new Stopwatch();
-		watch.Start();
-        var lastTime = watch.ElapsedMilliseconds;
-        while (true)
-		{
-			if(XClient.GameIsPaused)	
-			{
-				Thread.Sleep(100);
-				continue;
-			}
-			if (watch.ElapsedMilliseconds - lastTime > 10000)
-			{
-				var hook = new TaskPoolGlobalHook();
-				//var hook = new SimpleReactiveGlobalHook();
-				hook.MouseMoved += OnMouseMoved;
-				//hook.MousePressed += OnMouseMoved;
-				hook.Run();
-				lastTime= watch.ElapsedMilliseconds;
-			}
-        }
-		watch.Stop();
+		var hook = new TaskPoolGlobalHook();
+		//var hook = new SimpleReactiveGlobalHook();
+		hook.MouseMoved += OnMouseMoved;
+		//hook.MousePressed += OnMouseMoved;
+		hook.Run();
+        
 	}
 
 	private void OnMouseMoved(object? sender, MouseHookEventArgs e)
 	{
-		var data = e.Data;
-            XClient.QueuePacketSend(
-                XPacketConverter.Serialize(
-                    XPacketType.SendCursorPosition, new XPacketCursor
-                    {
-                        Id = XClient.Id,
-                        X = data.X,  //TODO: change to cursor pos
-                        Y = data.Y   //TODO: change to cursor pos 
-                    }).ToPacket());
+		if (watch.ElapsedMilliseconds > 50)
+		{
+			var data = e.Data;
+			XClient.QueuePacketSend(
+				XPacketConverter.Serialize(
+					XPacketType.SendCursorPosition, new XPacketCursor
+					{
+						Id = XClient.Id,
+						X = data.X,  //TODO: change to cursor pos
+						Y = data.Y   //TODO: change to cursor pos 
+					}).ToPacket());
+			watch.Restart();
+		}
 
     }
 

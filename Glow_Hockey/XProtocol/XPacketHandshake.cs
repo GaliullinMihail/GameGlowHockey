@@ -8,13 +8,8 @@ namespace XProtocol
         public int MagicHandshakeNumber;
     }
 
-    public class XPacketRegister
+    public class XPacketWithoutInfo
     {
-    }
-
-    public class XPacketException
-    {
-
     }
 
     public class XPacketAddToGame
@@ -33,10 +28,5 @@ namespace XProtocol
 
         [XField(3)]
         public int Y;
-    }
-
-    public class XPacketStartGame
-    {
-
     }
 }
