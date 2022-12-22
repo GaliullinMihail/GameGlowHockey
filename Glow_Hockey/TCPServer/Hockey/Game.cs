@@ -11,11 +11,11 @@ namespace TCPServer.Hockey
     {
         public static int radiusPlayer = 10;
         public static int radiusPuck = 5;
-        Point firstPlayerPosition = new Point(0, 0);
-        Point secondPlayerPosition = new Point(100, 0);
+        Point firstPlayerPosition = new Point(407, 441);                    //1828 x 882
+        Point secondPlayerPosition = new Point(1421, 441);                    //914 x 441
         private List<Player> players;
         private GameScore Score;
-        private Puck puck;
+        private Puck puck;  
 
         public Game()
         {
@@ -47,7 +47,7 @@ namespace TCPServer.Hockey
         private double PointLength(Point point1, Point point2) => Math.Sqrt((point1.X - point2.X) * (point1.X - point2.X) + 
             (point1.Y - point2.Y) * (point1.Y - point2.Y));
 
-        
+        public int PlayerCount => players.Count;
 
     }
 }

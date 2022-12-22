@@ -58,6 +58,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\background.png" />
+	  <None Remove="Resources\Images\pause.jpg" />
+	  <None Remove="Resources\Images\play.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\XProtocol\XProtocol.csproj" />
 	</ItemGroup>
 

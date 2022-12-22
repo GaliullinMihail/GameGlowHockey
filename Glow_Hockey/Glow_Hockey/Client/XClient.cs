@@ -1,6 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Net;
 using XProtocol;
+using XProtocol.Serializator;
 
 namespace Glow_Hockey.Client
 {
@@ -12,6 +13,7 @@ namespace Glow_Hockey.Client
 
         private static Socket _socket;
         private static IPEndPoint _serverEndPoint;
+        public static int id { get; private set; }
 
         public static void Connect(string ip, int port)
         {
@@ -101,11 +103,22 @@ namespace Glow_Hockey.Client
                 //case XPacketType.Handshake:
                 //    ProcessHandshake(packet);
                 //    break;
+                case XPacketType.AddToGame:
+                    ProcessAddToGame(packet);
+                    break;
                 case XPacketType.Unknown:
                     break;
+                case XPacketType.Exception:
+                    throw new Exception();          //TODO Exception Problema(не останавливает приложение)
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private static void ProcessAddToGame(XPacket packet)
+        {
+            var idPacket = XPacketConverter.Deserialize<XPacketAddToGame>(packet);
+            XClient.id = idPacket.id;
         }
     }
 }

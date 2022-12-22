@@ -3,19 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Glow_Hockey.MainPage">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
-
-            <Button
+    <StackLayout>
+        <Label Text="StartGame"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+               FontSize="50"/>
+    <ImageButton
                 x:Name="CounterBtn"
-                Text="Register"
+                Source="play.png"
                 Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
-    </ScrollView>
+                ScaleX="0.1"
+                ScaleY="0.1"
+                TranslationY="-600"/>
+    </StackLayout>
 
 </ContentPage>

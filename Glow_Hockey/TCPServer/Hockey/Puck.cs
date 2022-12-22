@@ -13,7 +13,7 @@ namespace TCPServer.Hockey
         private Point acceleration;
         public Puck()
         {
-            position = new Point(50, 0);
+            position = new Point(914, 441);
             acceleration = new Point(0, 0);
         }
 

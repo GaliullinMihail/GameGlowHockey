@@ -54,20 +54,29 @@ namespace TCPServer
         private void ProcessIncomingPacket(XPacket packet)
         {
             var type = XPacketTypeManager.GetTypeFromPacket(packet);
-
-            switch (type)
+            try
             {
-                case XPacketType.Handshake:
-                    ProcessHandshake(packet);
-                    break;
-                case XPacketType.Register:
-                    ProcessRegister(packet);
-                    break;
-                case XPacketType.Unknown:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (type)
+                {
+                    case XPacketType.Handshake:
+                        ProcessHandshake(packet);
+                        break;
+                    case XPacketType.Register:
+                        ProcessRegister(packet);
+                        break;
+                    case XPacketType.Unknown:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Exception");
+                QueuePacketSend(XPacketConverter.Serialize(XPacketType.Exception, new XPacketException()).ToPacket());
+            }
+
+            
         }
 
         private void ProcessHandshake(XPacket packet)
@@ -86,12 +95,13 @@ namespace TCPServer
         {
             Console.WriteLine("Recieved register packet.");
 
-            var register = XPacketConverter.Deserialize<XPacketRegister>(packet);
             _game.AddPlayer();
 
             Console.WriteLine("Answering..");
 
-            QueuePacketSend(XPacketConverter.Serialize(XPacketType.AddToGame, register).ToPacket());
+            QueuePacketSend(XPacketConverter.Serialize(XPacketType.AddToGame, new XPacketAddToGame { id = _game.PlayerCount - 1 }).ToPacket());
+
+            Console.WriteLine("Give id packet to client");
 
         }
 

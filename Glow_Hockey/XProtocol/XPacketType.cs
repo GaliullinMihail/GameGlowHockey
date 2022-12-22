@@ -13,7 +13,8 @@
         IncreaseScore, //player from server 
         EarlyWin, //player from server
         AddToGame, //player from server
+        Handshake,
         Unknown,
-        Handshake
+        Exception
     }
 }

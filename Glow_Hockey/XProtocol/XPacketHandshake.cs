@@ -12,7 +12,14 @@ namespace XProtocol
     {
     }
 
+    public class XPacketException
+    {
+
+    }
+
     public class XPacketAddToGame
     {
+        [XField(1)]
+        public int id;
     }
 }
