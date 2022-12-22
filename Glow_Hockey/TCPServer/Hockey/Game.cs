@@ -34,9 +34,13 @@ namespace TCPServer.Hockey
             Console.WriteLine($"add player {players.Count-1}");
         }
 
-        public void ChangePosition(string nickname, Point position)
+        public void ChangePosition(int id, Point position)
         {
-            var player = players.FirstOrDefault(p => p.Name == nickname);
+            if (players.Count != 2 || id >= 2)
+            {
+                throw new ArgumentOutOfRangeException("id");
+            }
+            var player = players[id];
             if (player == null)
                 throw new InvalidOperationException("There is no such player in game");
             player.Position = position;

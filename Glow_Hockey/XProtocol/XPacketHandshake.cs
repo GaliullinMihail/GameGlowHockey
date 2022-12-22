@@ -20,6 +20,23 @@ namespace XProtocol
     public class XPacketAddToGame
     {
         [XField(1)]
-        public int id;
+        public int Id;
+    }
+
+    public class XPacketCursor
+    {
+        [XField(1)]
+        public int Id;
+
+        [XField(2)]
+        public int X;
+
+        [XField(3)]
+        public int Y;
+    }
+
+    public class XPacketStartGame
+    {
+
     }
 }

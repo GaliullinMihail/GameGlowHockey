@@ -14,12 +14,15 @@ public partial class MainPage : ContentPage
 
 	private async void OnCounterClicked(object sender, EventArgs e)
 	{
-        XClient.QueuePacketSend(
-                XPacketConverter.Serialize(
-                    XPacketType.Register,
-                    new XPacketRegister
-                    {
-                    }).ToPacket());
+        if (XClient.IsRegistered)
+        {
+            XClient.QueuePacketSend(
+                    XPacketConverter.Serialize(
+                        XPacketType.Register,
+                        new XPacketRegister
+                        {
+                        }).ToPacket());
+        }
         await Shell.Current.GoToAsync("GamePage");
 	}
 }

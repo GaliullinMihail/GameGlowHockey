@@ -19,9 +19,10 @@
             </ImageButton>
 
         </Grid>
-        
 
-        <Image Source="background.png" WidthRequest="2000" HeightRequest="940" ScaleX="1.35"></Image>
+
+        <Image x:Name ="background" Source="background.png" WidthRequest="2000" HeightRequest="940" ScaleX="1.35">
+        </Image>
     </StackLayout>
 
 </ContentPage>

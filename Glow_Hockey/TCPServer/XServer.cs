@@ -9,7 +9,7 @@ namespace TCPServer
     public class XServer
     {
         private readonly Socket _socket;
-        private readonly List<ConnectedClient> _clients;
+        internal readonly List<ConnectedClient> _clients;
         private Game _game;
 
         private bool _listening;

@@ -13,7 +13,9 @@ namespace Glow_Hockey.Client
 
         private static Socket _socket;
         private static IPEndPoint _serverEndPoint;
-        public static int id { get; private set; }
+        public static int Id { get; private set; }
+
+        public static bool GameIsPaused { get; private set; }
 
         public static void Connect(string ip, int port)
         {
@@ -22,8 +24,10 @@ namespace Glow_Hockey.Client
 
         static XClient()
         {
+            XClient.Id = -1;
             XClient.OnPacketRecieve += OnPacketRecieveMethod;
             XClient.Connect("127.0.0.1", 4910);
+            XClient.GameIsPaused = true;
         }
 
         private static void OnPacketRecieveMethod(byte[] packet)
@@ -106,6 +110,9 @@ namespace Glow_Hockey.Client
                 case XPacketType.AddToGame:
                     ProcessAddToGame(packet);
                     break;
+                case XPacketType.StartGame:
+                    GameIsPaused = false;
+                    break;
                 case XPacketType.Unknown:
                     break;
                 case XPacketType.Exception:
@@ -118,7 +125,9 @@ namespace Glow_Hockey.Client
         private static void ProcessAddToGame(XPacket packet)
         {
             var idPacket = XPacketConverter.Deserialize<XPacketAddToGame>(packet);
-            XClient.id = idPacket.id;
+            XClient.Id = idPacket.Id;
         }
+
+        public static bool IsRegistered => Id == -1;
     }
 }

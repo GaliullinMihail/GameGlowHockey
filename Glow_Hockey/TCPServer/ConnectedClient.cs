@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text.Json;
@@ -17,6 +18,8 @@ namespace TCPServer
 
         private readonly Game _game;
 
+        private XServer _server;
+
         private readonly Queue<byte[]> _packetSendingQueue = new Queue<byte[]>();
 
 
@@ -24,6 +27,7 @@ namespace TCPServer
         {
             Client = client;
             _game = game;
+            _server = server;
 
             Task.Run((Action)ProcessIncomingPackets);
             Task.Run((Action)SendPackets);
@@ -64,6 +68,10 @@ namespace TCPServer
                     case XPacketType.Register:
                         ProcessRegister(packet);
                         break;
+                    case XPacketType.SendCursorPosition:
+                        ProcessCursor(packet);
+                        break;
+                    
                     case XPacketType.Unknown:
                         break;
                     default:
@@ -77,6 +85,19 @@ namespace TCPServer
             }
 
             
+        }
+
+        private void ProcessCursor(XPacket packet)
+        {
+            Console.WriteLine("Recieved cursor packet");
+
+            var cursorPacket = XPacketConverter.Deserialize<XPacketCursor>(packet);
+            _game.ChangePosition(cursorPacket.Id, new Point(cursorPacket.X, cursorPacket.Y));
+
+            //foreach(var client in _server._clients)
+            //{
+            //    client.QueuePacketSend(XPacketConverter.Serialize())
+            //}
         }
 
         private void ProcessHandshake(XPacket packet)
@@ -99,9 +120,21 @@ namespace TCPServer
 
             Console.WriteLine("Answering..");
 
-            QueuePacketSend(XPacketConverter.Serialize(XPacketType.AddToGame, new XPacketAddToGame { id = _game.PlayerCount - 1 }).ToPacket());
+            QueuePacketSend(XPacketConverter.Serialize(XPacketType.AddToGame, new XPacketAddToGame { Id = _game.PlayerCount - 1 }).ToPacket());
 
             Console.WriteLine("Give id packet to client");
+
+            if(_game.PlayerCount == 2)
+            {
+                Console.WriteLine("give start packets to clients");
+
+                foreach(var client in _server._clients)
+                {
+                    var startGamePacket = new XPacketStartGame();
+                    client.QueuePacketSend(XPacketConverter.Serialize(XPacketType.StartGame, startGamePacket).ToPacket());
+                }
+                Console.WriteLine("gave start packets to clients");
+            }
 
         }
 

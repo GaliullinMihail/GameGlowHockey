@@ -14,6 +14,8 @@ namespace XProtocol
             RegisterType(XPacketType.Handshake, 1, 0);
             RegisterType(XPacketType.Register, 1, 1);
             RegisterType(XPacketType.AddToGame, 1, 2);
+            RegisterType(XPacketType.SendCursorPosition, 1, 3);
+            RegisterType(XPacketType.StartGame, 1, 4);
             
         }
 
