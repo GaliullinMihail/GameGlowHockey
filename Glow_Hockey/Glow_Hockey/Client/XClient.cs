@@ -13,6 +13,12 @@ namespace Glow_Hockey.Client
 
         private static Socket _socket;
         private static IPEndPoint _serverEndPoint;
+        public static Point firstPlayer { get; private set; }
+
+        public static Point secondPlayer { get; private set; }
+
+        public static Point puck { get; private set; }
+
         public static int Id { get; private set; }
 
         public static bool GameIsPaused { get; private set; }
@@ -24,6 +30,9 @@ namespace Glow_Hockey.Client
 
         static XClient()
         {
+            firstPlayer = new Point(500, 592);
+            secondPlayer = new Point(1415, 592);
+            puck = new Point(957, 592);
             XClient.Id = -1;
             XClient.OnPacketRecieve += OnPacketRecieveMethod;
             XClient.Connect("127.0.0.1", 4910);

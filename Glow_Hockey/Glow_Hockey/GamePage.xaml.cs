@@ -15,7 +15,6 @@ public partial class GamePage : ContentPage
 	{
         watch.Start();
         InitializeComponent();
-		
 		Task.Run((Action)SendCursorPackets);
 	}
 

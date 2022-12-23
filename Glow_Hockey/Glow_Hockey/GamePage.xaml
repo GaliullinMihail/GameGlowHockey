@@ -18,19 +18,21 @@
 
             <ImageButton x:Name="PauseBtn"
                      Source="pause.jpg"
-                     Clicked="PauseBtn_Clicked"
+                     Clicked="PauseBtn_Clicked" 
                      WidthRequest="80">
             </ImageButton>
 
         </Grid>
 
 
-        <Image x:Name ="background" Source="background.png" WidthRequest="2000" HeightRequest="940" ScaleX="1.35">
-        </Image>
+        
 
         <GraphicsView Drawable="{StaticResource drawable}"
-                      HeightRequest="300"
-                      WidthRequest="400" />
+                      HeightRequest="1036"
+                      WidthRequest="1874"
+                      TranslationX="-19"
+                      TranslationY="-123"/>
+
     </StackLayout>
 
 </ContentPage>
