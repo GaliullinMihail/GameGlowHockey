@@ -9,8 +9,8 @@ namespace TCPServer.Hockey
 {
     public class Game
     {
-        public static int radiusPlayer = 10;
-        public static int radiusPuck = 5;
+        public static int radiusPlayer = 50;
+        public static int radiusPuck = 40;
         Point firstPlayerPosition = new Point(500, 592);                    
         Point secondPlayerPosition = new Point(1415, 592);                  
         private List<Player> players;
@@ -32,7 +32,10 @@ namespace TCPServer.Hockey
                 throw new Exception("Add more than 2 players");
             }
 
-            players.Add(new Player($"player{players.Count}", players.Count == 0 ? firstPlayerPosition: secondPlayerPosition));
+            players.Add(new Player($"player{players.Count}", 
+                players.Count == 0 ? firstPlayerPosition: secondPlayerPosition,
+                players.Count == 0 ? 43 + radiusPlayer: 957 - radiusPlayer,
+                players.Count == 0 ? 957 + radiusPlayer: 1872 - radiusPlayer));
             Console.WriteLine($"add player {players.Count-1}");
         }
 
@@ -57,7 +60,7 @@ namespace TCPServer.Hockey
 
         public Point GetPlayerPosition(int id) => players.Count < id + 1? throw new ArgumentOutOfRangeException(): players[id].Position;
 
-        public Point PuckPosition => puck.position;
+        public Point PuckPosition => puck.Position;
 
     }
 }

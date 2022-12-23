@@ -28,6 +28,7 @@
         
 
         <GraphicsView Drawable="{StaticResource drawable}"
+                      x:Name ="BoardGraphicsView"
                       HeightRequest="1036"
                       WidthRequest="1874"
                       TranslationX="-19"

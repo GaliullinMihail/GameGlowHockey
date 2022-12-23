@@ -9,7 +9,20 @@ namespace TCPServer.Hockey
 {
     public class Puck
     {
-        public Point position;
+        private Point _position;
+        public Point Position { 
+            get
+            {
+                return _position;
+            }
+            
+            set
+            {
+                int x = value.X < 43 + 40 ? 83 : value.X > 1872 - 40 ? 1832 : value.X;
+                int y = value.Y < 152 + 40 ? 192 : value.Y > 1043 - 40 ? 1003 : value.Y;
+                _position = new Point(x, y);
+            }
+        }
         private int radius = 40;
         private int leftBorder = 43;
         private int rightBorder = 1872;
@@ -18,7 +31,7 @@ namespace TCPServer.Hockey
         private Point acceleration;
         public Puck()
         {
-            position = new Point(957, 592);
+            Position = new Point(957, 592);
             acceleration = new Point(0, 0);
         }
 
@@ -33,10 +46,10 @@ namespace TCPServer.Hockey
 
         public void HitBorder()
         {
-            if (position.X + radius >= rightBorder || position.X - radius <= leftBorder)
+            if (Position.X + radius >= rightBorder || Position.X - radius <= leftBorder)
                 HitWidthBorder();
 
-            if(position.Y + radius >= bottomBorder || position.Y - radius <= topBorder)
+            if(Position.Y + radius >= bottomBorder || Position.Y - radius <= topBorder)
                 HitHeightBorder();
         }
     }

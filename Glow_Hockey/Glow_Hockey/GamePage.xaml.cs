@@ -3,6 +3,7 @@ using SharpHook;
 using SharpHook.Reactive;
 using System.Diagnostics;
 using System.Reactive.Linq;
+using System.Timers;
 using XProtocol;
 using XProtocol.Serializator;
 
@@ -11,11 +12,14 @@ namespace Glow_Hockey;
 public partial class GamePage : ContentPage
 {
 	private Stopwatch watch = new Stopwatch();
+	public static GraphicsView graphicsView;
 	public GamePage()
 	{
         watch.Start();
+		graphicsView = BoardGraphicsView;
         InitializeComponent();
 		Task.Run((Action)SendCursorPackets);
+			
 	}
 
     private void PauseBtn_Clicked(object sender, EventArgs e)
@@ -29,16 +33,16 @@ public partial class GamePage : ContentPage
     }
 
 	private void SendCursorPackets()
-	{
+	{	
 		var hook = new TaskPoolGlobalHook();
-		hook.MouseMoved += OnMouseMoved;
+		hook.MousePressed += OnMouseMoved;
 		hook.Run();
         
 	}
 
 	private void OnMouseMoved(object? sender, MouseHookEventArgs e)
 	{
-		if (watch.ElapsedMilliseconds > 50 && !XClient.GameIsPaused)
+		if (watch.ElapsedMilliseconds > 10 && !XClient.GameIsPaused)
 		{
 			var data = e.Data;
 			XClient.QueuePacketSend(
@@ -49,7 +53,11 @@ public partial class GamePage : ContentPage
 						X = data.X,  
 						Y = data.Y   
 					}).ToPacket());
-			watch.Restart();
+
+            var graphicsView = BoardGraphicsView;
+
+            graphicsView.Invalidate();
+            watch.Restart();
 		}
     }
 }

@@ -108,14 +108,8 @@ namespace TCPServer
             Console.WriteLine("Recieved cursor packet");
 
             var cursorPacket = XPacketConverter.Deserialize<XPacketCursor>(packet);
-           //  _game.ChangePosition(cursorPacket.Id, new Point(cursorPacket.X, cursorPacket.Y));
-            Console.WriteLine($"{cursorPacket.Id} - id {cursorPacket.X}- x {cursorPacket.Y} - y");
-
-            //foreach(var client in _server._clients)
-            //{
-            //    client.QueuePacketSend(XPacketConverter.Serialize())
-            //}
-        }
+            _game.ChangePosition(cursorPacket.Id, new Point(cursorPacket.X, cursorPacket.Y));
+            Console.WriteLine($"{cursorPacket.Id} - id {cursorPacket.X}- x {cursorPacket.Y} - y");        }
 
         private void ProcessHandshake(XPacket packet)
         {
