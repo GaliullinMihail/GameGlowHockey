@@ -11,8 +11,8 @@ namespace TCPServer.Hockey
     public class Puck
     {
         private Point _position;
-        private double scaler = 0.01;
-        private int max = 5;
+        private double scaler = 0.001;
+        private int max = 3;
         public Point Position { 
             get
             {
