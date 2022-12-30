@@ -18,6 +18,7 @@ namespace XProtocol
             RegisterType(XPacketType.StartGame, 1, 4);
             RegisterType(XPacketType.Pause, 1, 5);
             RegisterType(XPacketType.GameInfo, 1, 6);
+            RegisterType(XPacketType.ChangedScore, 1, 7);
             
         }
 

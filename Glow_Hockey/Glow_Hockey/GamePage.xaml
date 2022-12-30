@@ -13,7 +13,8 @@
         <Grid>
             <Label Text ="0     -     0"            
                    HorizontalOptions="Center"
-                   FontSize="30">
+                   FontSize="30"
+                   x:Name="Score">
             </Label>
 
             <ImageButton x:Name="PauseBtn"

@@ -17,8 +17,8 @@ namespace TCPServer.Hockey
             secondPLayer = 0;
         }
 
-        public int increaseFirstPlayerScore => firstPLayer++;
-        public int increaseSecondPlayerScore => secondPLayer++;
+        public void IncreaseFirstPlayerScore() => firstPLayer++;
+        public void IncreaseSecondPlayerScore() => secondPLayer++;
 
     }
 }

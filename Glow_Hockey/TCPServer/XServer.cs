@@ -57,6 +57,7 @@ namespace TCPServer
 
         private void SendGameInfo()
         {
+           // var previousScore = _game.Score;
             while(true)
             {
                 if(_game.IsPause)
@@ -65,13 +66,23 @@ namespace TCPServer
                     continue;
                 }
 
-                if(watch.ElapsedMilliseconds > 50)
+                if(watch.ElapsedMilliseconds > 300)
                 {
+                    _game.UpdateGame((int) watch.ElapsedMilliseconds);
                     var firstPlayerPos = _game.GetPlayerPosition(0);
                     var secondPlayerPos = _game.GetPlayerPosition(1);
                     var puckPos = _game.PuckPosition;
+                    
                     foreach (var client in clients)
                     {
+                      //  if (previousScore.firstPLayer != _game.Score.firstPLayer || previousScore.secondPLayer != _game.Score.secondPLayer)
+                        //{
+                            client.QueuePacketSend(XPacketConverter.Serialize(XPacketType.ChangedScore, new XPacketScore
+                            {
+                                firstPlayerScore = _game.Score.firstPLayer,
+                                secondPlayerScore = _game.Score.secondPLayer
+                            }).ToPacket());
+                     //   }
 
                         client.QueuePacketSend(XPacketConverter.Serialize(XPacketType.GameInfo, new XPacketGameInfo
                         {
@@ -85,6 +96,7 @@ namespace TCPServer
                     }
                     watch.Restart();
                 }
+              //  previousScore = _game.Score;
             }
         }
 

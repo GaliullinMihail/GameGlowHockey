@@ -23,6 +23,10 @@ namespace Glow_Hockey.Client
 
         public static bool GameIsPaused { get; private set; }
 
+        public static int firstPlayerScore;
+
+        public static int secondPlayerScore;
+
         public static void Connect(string ip, int port)
         {
             Connect(new IPEndPoint(IPAddress.Parse(ip), port));
@@ -130,6 +134,9 @@ namespace Glow_Hockey.Client
                 case XPacketType.GameInfo:
                     ProcessReceivedGameInfo(packet);
                     break;
+                case XPacketType.ChangedScore:
+                    ProcessChangeScore(packet);
+                    break;
                 case XPacketType.Exception:
                     throw new Exception();          //TODO Exception Problema(не останавливает приложение)
                 default:
@@ -143,6 +150,13 @@ namespace Glow_Hockey.Client
             XClient.firstPlayer = new Point(gameInfo.firstPlayerX, gameInfo.firstPlayerY);
             XClient.secondPlayer = new Point(gameInfo.secondPlayerX, gameInfo.secondPlayerY);
             XClient.puck = new Point(gameInfo.puckX, gameInfo.puckY);
+        }
+
+        private static void ProcessChangeScore(XPacket packet)
+        {
+            var score = XPacketConverter.Deserialize<XPacketScore>(packet);
+            firstPlayerScore = score.firstPlayerScore;
+            secondPlayerScore = score.secondPlayerScore;
         }
 
         private static void ProcessAddToGame(XPacket packet)

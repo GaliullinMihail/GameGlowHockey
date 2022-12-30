@@ -50,4 +50,13 @@ namespace XProtocol
         [XField(6)]
         public int puckY;
     }
+
+    public class XPacketScore
+    {
+        [XField(1)]
+        public int firstPlayerScore;
+
+        [XField(2)]
+        public int secondPlayerScore;
+    }
 }
